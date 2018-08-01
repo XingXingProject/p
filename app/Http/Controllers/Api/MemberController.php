@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Mrgoon\AliSms\AliSms;
 
-class MemberController extends Controller
+class MemberController extends BaseController
 {
     /**
      * 接收短信
@@ -37,9 +37,9 @@ class MemberController extends Controller
 //            'access_secret' => 'cA2kpj4Ztn6WiJBZXFkHzkAo8dXrxK',
 //            'sign_name' => '邓可星',
 //        ];
-        //  $aliSms = new AliSms();
-        //调用接口发送短信
-        // $response = $aliSms->sendSms($tel, 'SMS_140665170', ['code' => $code], $config);
+//          $aliSms = new AliSms();
+//       // 调用接口发送短信
+//         $response = $aliSms->sendSms($tel, 'SMS_140665170', ['code' => $code], $config);
 //        exit;
 
         //判断
@@ -88,7 +88,8 @@ class MemberController extends Controller
 
             }
 //取出验证码
-            $sms = Redis::get("tel_" . $data['tel']);
+$sms = Redis::get("tel_" . $data['tel']);
+
             if ($sms !== $data['sms']) {
                 return [
                     'status' => 'false',
@@ -216,6 +217,20 @@ class MemberController extends Controller
         }
 
     }
+
+    /**
+     * 商品详细信息
+     * @param Request $request
+     */
+    public function detail(Request $request)
+    {
+        $id=$request->post('user_id');
+         $mem= Member::where('id',$id)->first();
+         return $mem;
+
+    }
+
+
 
 
 }

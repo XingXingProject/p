@@ -12,7 +12,7 @@
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">菜品分类ID</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" value="{{$menuCate->type_id}}" placeholder="菜品分类ID" name="type_id">
+                <input type="text" class="form-control" value="{{$menuCate->type_accumulation}}" placeholder="菜品分类ID" name="type_id">
             </div>
         </div>
 

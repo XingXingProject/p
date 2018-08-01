@@ -21,8 +21,6 @@ class MenuController extends BaseController
         $menuId=\request()->input('category_id');
             //$shop_user_id=Auth::user()->id;
             $shop=ShopInfo::where("shop_user_id",Auth::user()->id)->first();
-
-
         //$id=Auth::user()->id;
         $query=Menu::orderBy('id')->where('shop_info_id',$shop->id);
 
@@ -105,7 +103,7 @@ class MenuController extends BaseController
 
        $menu= Menu::findOrFail($id);
 
-        File::delete(public_path("uploads/".$menu->goods_img));
+        File::delete(public_path($menu->goods_img));
        $menu->delete();
 
 

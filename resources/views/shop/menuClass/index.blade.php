@@ -24,7 +24,7 @@
             <tr class="info">
                 <td>{{$menuCate->id}}</td>
                 <td>{{$menuCate->name}}</td>
-                <td>{{$menuCate->type_id}}</td>
+                <td>{{$menuCate->type_accumulation}}</td>
                 <td>{{$menuCate->description}}</td>
                 <td>
 

@@ -125,15 +125,14 @@ class AdminController extends BaseController
              if($request->isMethod('post')){
                  //修改密码接收所有的值
                  if(Hash::check($request->post('password'),$user->password)){
-                     $user->password=bcrypt($request->re_password);
+                     $user->password=bcrypt($request->post('re_password'));
+                     //修改所有的值
                      $user->save();
                      $request->session()->flash('success','密码修改成功');
-                     return redirect()->route('admin.index');
+                 return redirect()->route('admin.index');
                  }
-                  //修改所有的值
-                 $user->update($request->post());
                  //提示语句
-                 $request->session()->flash('success','修改成功');
+                 $request->session()->flash('danger','密码不对');
                  //跳转
                  return redirect()->route('admin.index');
              }
