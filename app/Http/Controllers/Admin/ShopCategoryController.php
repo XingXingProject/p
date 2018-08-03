@@ -16,12 +16,12 @@ class ShopCategoryController extends BaseController
     {
         //取到所有的值
         $query = $request->query();
-        //接受所有的值
+        //接受search值
         $search = $request->input('search');
 
         //显示
         $shops = ShopCategory::where('name', 'like', "%$search%")
-            ->paginate(2);
+            ->paginate(5);
         //显示视图
         return view('admin.category.index', compact('shops', 'query'));
     }

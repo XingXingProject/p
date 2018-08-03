@@ -51,41 +51,81 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{route('active.index')}}"><i class="fa fa-circle-o"></i>活动告示</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Morris</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Flot</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Inline charts</a></li>
+
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-laptop"></i>
-                    <span>UI Elements</span>
+                    <span>会员管理</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/pages/UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
-                    <li><a href="/pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
-                    <li><a href="/pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
-                    <li><a href="/pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
-                    <li><a href="/pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
-                    <li><a href="/pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>
+                    <li><a href="{{route('member.index')}}"><i class="fa fa-circle-o"></i>会员列表展示</a></li>
+
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-edit"></i> <span>Forms</span>
+                    <i class="fa fa-edit"></i> <span>菜品销量统计</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/pages/forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
-                    <li><a href="/pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-                    <li><a href="/pages/forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>
+                    <li><a href="{{route('orders.menu')}}"><i class="fa fa-circle-o"></i> 菜品统计</a></li>
+                    <li><a href="{{route('orders.menuDay')}}"><i class="fa fa-circle-o"></i> 菜品按日统计</a></li>
+                    <li><a href="{{route('orders.menuMonth')}}"><i class="fa fa-circle-o"></i> 菜品按月统计</a></li>
+
                 </ul>
             </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>订单量</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{route('orders.index')}}"><i class="fa fa-circle-o"></i> 订单量按统计</a></li>
+                    <li><a href="{{route('orders.day')}}"><i class="fa fa-circle-o"></i> 订单量按日统计</a></li>
+                    <li><a href="{{route('orders.month')}}"><i class="fa fa-circle-o"></i> 订单量按月统计</a></li>
+
+
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>权限</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{route('per.index')}}"><i class="fa fa-circle-o"></i> 权限添加</a></li>
+
+
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>角色</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{route('role.index')}}"><i class="fa fa-circle-o"></i> 角色添加</a></li>
+
+
+                </ul>
+            </li>
+
 
 
 

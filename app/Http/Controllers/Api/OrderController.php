@@ -9,8 +9,10 @@ use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderGood;
 use Faker\Provider\Base;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends BaseController
 {
@@ -61,28 +63,52 @@ class OrderController extends BaseController
 
         }
         $data['total'] = $total;
-        //赋值状态
-        $data['order_status'] = 0;
-        //入订单库
-        $order = Order::create($data);
-        $data['order_birth_time'] = $order->create_at;
+        //赋值状态=等待支付
+        $data['status'] = 0;
+
+        //事物启动
+        DB::beginTransaction();
+
+        try {
+            //入订单库
+            $order = Order::create($data);
+            $data['order_birth_time'] = $order->create_at;
 
 
-        //准备入商品订单,里面是商品的信息
-        $goods['order_id'] = $order->id;
-        foreach ($carts as  $vv) {
-            //找到当前商品
-            $info = Menu::find($vv->goods_id);
-            $goods['goods_id'] = $vv->goods_id;
-            $goods['goods_name'] = $info->goods_name;
-            $goods['goods_img'] = $info->goods_img;
-            $goods['amount'] = $vv->amount;
-            $goods['goods_price'] = $info->goods_price;
-            //入库
-            OrderGood::create($goods);
+            //准备入商品订单,里面是商品的信息
+            $goods['order_id'] = $order->id;
+            foreach ($carts as $vv) {
+                //找到当前商品
+                $info = Menu::find($vv->goods_id);
+                $goods['goods_id'] = $vv->goods_id;
+                $goods['goods_name'] = $info->goods_name;
+                $goods['goods_img'] = $info->goods_img;
+                $goods['amount'] = $vv->amount;
+                $goods['goods_price'] = $info->goods_price;
+                //入库
+                OrderGood::create($goods);
+
+            }
+            //事物提交
+            DB::commit();
+            //捕获
+        } catch (\Exception $exception) {
+              //回滚
+            DB::rollBack();
+            //返回数据
+            return [
+                "status" => "false",
+                "message" => $exception->getMessage()
+            ];
+        }catch(QueryException $exception){
+            //回滚
+            DB::rollBack();
+            //返回数据  指数据库
+            return [
+                "status" => "false",
+                "message" => $exception->getMessage()
+            ];
         }
-
-
         //返回数据
         return [
             "status" => "true",
@@ -100,7 +126,7 @@ class OrderController extends BaseController
 
         $data['id'] = $order->id;
         $data['order_code'] = $order->order_code;
-        $data['order_status'] = "代付款";
+        $data['order_status'] = $order->order_status;
         $data['shop_name'] = $order->shop->shop_name;
         $data['shop_img'] = $order->shop->shop_img;
         $data['shop_id'] = $order->shop_id;
@@ -126,7 +152,7 @@ class OrderController extends BaseController
         //判断用户余额够不够
         if ($order->total > $member->money) {
             return [
-                'status' => 'false',
+                'status' => "false",
                 'message' => '您余额不足，不能消费'
             ];
 
@@ -135,12 +161,12 @@ class OrderController extends BaseController
         $member->money = $member->money - $order->total;
         $member->save();
         //改变订单状态
-        $order->order_status = 1;
+        $order->update(['status' => 1]);
 
 
         return [
             'status' => "true",
-            'message' => '支付成功'
+            'message' => "支付成功"
         ];
 
     }
@@ -152,29 +178,25 @@ class OrderController extends BaseController
 
         //找到订单表返回所有信息
         $orders = Order::where('user_id', $request->input('user_id'))->get();
-        foreach ($orders as $order){
+        $datas = [];
+        foreach ($orders as $order) {
 
-            $data['id']=$order->id;
-            $data['order_code']=$order->order_code;
-            $data['order_status']="已完成";
-            $data['order_birth_time']=(string)$order->created_at;
-            $data['shop_id']=$order->shop_id;
-            $data['shop_name']=$order->shop->shop_name;
-            $data['shop_img']=$order->shop->shop_img;
+            $data['id'] = $order->id;
+            $data['order_code'] = $order->order_code;
+            $data['order_status'] = $order->order_status;
+            $data['order_birth_time'] = (string)$order->created_at;
+            $data['shop_id'] = $order->shop_id;
+            $data['shop_name'] = $order->shop->shop_name;
+            $data['shop_img'] = $order->shop->shop_img;
             $data['order_price'] = $order->total;
             $data['order_address'] = $order->provence . $order->city . $order->county . $order->order_address;
 
+            $data['goods_list'] = $order->goods;
+            $datas[] = $data;
+
         }
-        $data['goods_list']=$order->goods;
-        $datas[]=$data;
-        return  $datas;
 
-
-
-
-
-
-
+        return $datas;
 
 
     }

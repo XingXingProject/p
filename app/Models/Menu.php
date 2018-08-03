@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Menu extends Model
 {
     //设置可编辑字段
-    public $fillable=['goods_id','rating','shop_info_id','category_id','goods_price','description','month_sales','rating_count','tips','satisfy_count','satisfy_rate','goods_img','status'
+    public $fillable=['goods_name','rating','shop_info_id','category_id','goods_price','description','month_sales','rating_count','tips','satisfy_count','satisfy_rate','goods_img','status'
     ];
 
 
@@ -21,5 +21,11 @@ class Menu extends Model
         return $this->belongsTo(MenuCategory::class,'category_id');
 
     }
+
+    public function shop(){
+        return $this->belongsTo(ShopInfo::class,'shop_user_id');
+
+    }
+
 
 }

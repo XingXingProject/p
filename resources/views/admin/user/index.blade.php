@@ -15,6 +15,7 @@
             <th>id</th>
             <th>name</th>
             <th>email</th>
+            <th>所属角色</th>
             <th>是否审核</th>
             <th>操作</th>
         </tr>
@@ -23,6 +24,7 @@
                 <td>{{$user->id}}</td>
                 <td>{{$user->name}}</td>
                 <td>{{$user->email}}</td>
+                <td>{{ str_replace(['[',']','"'],'',json_encode($user->getRoleNames(),JSON_UNESCAPED_UNICODE)) }}</td>
                 <td>
                     @if($user->status===1)
                         <a href="#"></a>
@@ -34,9 +36,14 @@
                 </td>
                 <td>
                     <a href="{{route('admin.edit',['id'=>$user->id])}}" class=" btn btn-success">编辑</a>
+                    @if($user->id!==14)
                     <a href="{{route('admin.del',$user->id)}}" class=" btn btn-danger">删除</a>
-
-                    <a href="{{route('admin.check',$user->id)}}" class=" btn btn-info">审核</a>
+                    @endif
+                    @if($user->status==1)
+                        <a href="{{route('admin.check',$user->id)}}" class=" btn btn-danger">禁用</a> @else
+                        <a href="{{route('admin.check',$user->id)}}" class=" btn btn-info">启用</a>
+                    @endif
+                    {{--<a href="{{route('admin.check',$user->id)}}" class=" btn btn-info">审核</a>--}}
 
                 </td>
             </tr>

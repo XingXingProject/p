@@ -297,3 +297,39 @@ api文档：要用软件，学会写
 
 
 
+手动操作事物命令：
+
+    //开启事物
+       DB::beginTransaction();
+    
+    try{
+    
+       放入测试的数据    
+    
+       //提交事物
+       DB::commit();
+    
+    }catch（\Exception $exception）{
+    
+    //捕获异常
+    
+      //回滚
+      DB::rollBack();
+    //返回数据
+    return [
+        'status'=>"false",
+         'message'=>$exception->getMessage()
+        
+    ];
+    }catch(QueryException $exception){
+                //回滚
+                DB::rollBack();
+                //返回数据  指数据库
+                return [
+                    "status" => "false",
+                    "message" => $exception->getMessage()
+                ];
+            }
+    
+
+

@@ -18,17 +18,18 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">所属商家</label>
-            <div class="col-sm-6">
-                所属商家分类：<select name="shop_info_id">
-                    <option value="#">请选择分类</option>
-                    @foreach($infos as $info)
-                        <option value="{{$info->id}}">{{$info->shop_name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+        {{--<div class="form-group">--}}
+            {{--<label for="inputEmail3" class="col-sm-2 control-label">所属商家</label>--}}
+            {{--<div class="col-sm-6">--}}
+                {{--所属商家分类：<select name="shop_info_id">--}}
+                    {{--<option value="#">请选择分类</option>--}}
+                    {{--@foreach($infos as $info)--}}
+                        {{--<option value="{{$info->id}}"  >{{$info->shop_name}}</option>--}}
+                    {{--@endforeach--}}
+                {{--</select>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+
 
 
         <div class="form-group">

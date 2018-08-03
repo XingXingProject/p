@@ -23,7 +23,14 @@
                 <input type="password" class="form-control" id="inputEmail3" placeholder="管理员密码" name="password" value="{{old('password')}}">
             </div>
         </div>
-
+        <div class="form-group">
+            <label class="col-sm-2 control-label">角色名称</label>
+            <div class="col-sm-10">
+                @foreach($roles as $role)
+                    <input type="checkbox" name="per[]" value="{{$role->name}}">{{$role->name}}
+                @endforeach
+            </div>
+        </div>
         {{--<div class="form-group">--}}
             {{--<label for="inputEmail3" class="col-sm-2 control-label">状态</label>--}}
             {{--<div class=" col-sm-6">--}}

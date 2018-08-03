@@ -43,51 +43,45 @@
                     <i class="fa fa-files-o"></i>
                     <span>平台公告</span>
                     <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
+
             </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{route('active.info')}}"><i class="fa fa-circle-o"></i>活动详情</a></li>
-                    <li><a href="/pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                    <li><a href="/pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                    <li><a href="/pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+
+
                 </ul>
             </li>
-            <li>
-                <a href="/pages/widgets.html">
-                    <i class="fa fa-th"></i> <span>Widgets</span>
-                    <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
-            </span>
-                </a>
-            </li>
+
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
-                    <span>Charts</span>
+                    <span>订单</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-                    <li><a href="/pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
-                    <li><a href="/pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
+                    <li><a href="{{route('order.index')}}"><i class="fa fa-circle-o"></i>订单列表展示</a></li>
+                    <li><a href="{{route('order.total')}}"><i class="fa fa-circle-o"></i> 订单总计</a></li>
+                    <li><a href="{{route('order.day')}}"><i class="fa fa-circle-o"></i> 订单按日统计</a></li>
+                    <li><a href="{{route('order.month')}}"><i class="fa fa-circle-o"></i> 订单按月统计</a></li>
                     <li><a href="/pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-laptop"></i>
-                    <span>UI Elements</span>
+                    <span>菜品销量统计</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/pages/UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
-                    <li><a href="/pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
-                    <li><a href="/pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
+                    <li><a href="{{route('order.menu')}}"><i class="fa fa-circle-o"></i> 菜品总计</a></li>
+                    <li><a href="{{route('order.menuDay')}}"><i class="fa fa-circle-o"></i> 菜品销量按日统计</a></li>
+                    <li><a href="{{route('order.menuMonth')}}"><i class="fa fa-circle-o"></i>  菜品销量按月统计</a></li>
+
                     <li><a href="/pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
                     <li><a href="/pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
                     <li><a href="/pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>

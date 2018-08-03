@@ -3,11 +3,10 @@
 @section('content')
     <form class="form-horizontal" method="post" enctype="multipart/form-data">
         {{ csrf_field()}}
-
         <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">名称</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">菜品名称</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" id="inputEmail3" placeholder="名称" name="name" value="{{old('name',$menu->name)}}">
+                <input type="text" class="form-control" id="inputEmail3" placeholder="菜品名称" name="goods_name" value="{{old('goods_name',$menu->goods_name)}}">
             </div>
         </div>
 
@@ -18,17 +17,17 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">所属商家</label>
-            <div class="col-sm-6">
-                所属商家分类：<select name="shop_info_id">
-                    <option value="#">请选择分类</option>
-                    @foreach($infos as $info)
-                        <option value="{{$info->id}}" @if($info->id===$menu->shop_info_id)selected @endif>{{$info->shop_name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+        {{--<div class="form-group">--}}
+            {{--<label for="inputEmail3" class="col-sm-2 control-label">所属商家</label>--}}
+            {{--<div class="col-sm-6">--}}
+                {{--所属商家分类：<select name="shop_info_id">--}}
+                    {{--<option value="#">请选择分类</option>--}}
+                    {{--@foreach($infos as $info)--}}
+                        {{--<option value="{{$info->id}}" @if($info->id===$menu->shop_info_id)selected @endif>{{$info->shop_name}}</option>--}}
+                    {{--@endforeach--}}
+                {{--</select>--}}
+            {{--</div>--}}
+        {{--</div>--}}
 
 
         <div class="form-group">

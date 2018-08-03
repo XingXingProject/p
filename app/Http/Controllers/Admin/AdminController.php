@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Mrgoon\AliSms\AliSms;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AdminController extends BaseController
 {
@@ -16,16 +18,6 @@ class AdminController extends BaseController
     //登录
     public function login(Request $request)
     {
-//        $config = [
-//            'access_key' => 'LTAIylMWxorh14gn',
-//            'access_secret' => 'cA2kpj4Ztn6WiJBZXFkHzkAo8dXrxK',
-//            'sign_name' => '邓可星',
-//        ];
-//
-//        $aliSms = new AliSms();
-//        $response = $aliSms->sendSms('18290270219', 'SMS_140665170', ['code'=> '123'], $config);
-////        dd($response);
-
         if ($request->isMethod('post')) {
             //验证是否合格
             $this->validate($request, [
@@ -64,7 +56,11 @@ class AdminController extends BaseController
     public function check(Request $request, $id)
     {
         $user = Admin::findOrFail($id);
-        $user->status = 1;
+        if($user->status==0){
+            $user->status = 1;
+        }else{
+            $user->status = 0;
+        }
         $user->save();
         return redirect()->route('admin.index');
 
@@ -78,12 +74,13 @@ class AdminController extends BaseController
         $query = $request->query();
         //接受所有的值
         $search = $request->input('search');
+        $role=Role::all();
 
         //显示
         $users = Admin::where('name', 'like', "%$search%")
-            ->paginate(2);
+            ->paginate(5);
         //显示视图
-        return view('admin.user.index', compact('users', 'query'));
+        return view('admin.user.index', compact('users', 'query','role'));
     }
 
 
@@ -99,15 +96,18 @@ class AdminController extends BaseController
             $data=$request->all();
             $data['password']=bcrypt($data['password']);
             //添加数据
-            Admin::create($data);
-            //提示
-            $request->session()->flash('success', '添加成功');
+           $admin= Admin::create($data);
+
+           //给用户对象添加角色
+            $admin->syncRoles($request->post('per'));
+            //跳转并提示
+            return redirect()->route('admin.index')->with('success','创建'.$admin->name."成功");
             //跳转
             return redirect()->route('admin.index');
         }
-
+          $roles=Role::all();
         //显示视图
-        return view('admin.user.add');
+        return view('admin.user.add',compact('roles'));
 
     }
 
@@ -120,15 +120,19 @@ class AdminController extends BaseController
      */
     public function edit(Request $request, $id)
     {
+//        dd($request->post());
       //判断是否是post提交
         $user = Admin::findOrFail($id);
+       $roles=Role::all();
              if($request->isMethod('post')){
                  //修改密码接收所有的值
                  if(Hash::check($request->post('password'),$user->password)){
+
                      $user->password=bcrypt($request->post('re_password'));
                      //修改所有的值
                      $user->save();
-                     $request->session()->flash('success','密码修改成功');
+                     $user->syncRoles($request->post('per'));
+                     $request->session()->flash('success','修改成功');
                  return redirect()->route('admin.index');
                  }
                  //提示语句
@@ -138,7 +142,7 @@ class AdminController extends BaseController
              }
 
         //显示视图
-        return view('admin.user.edit',compact('user'));
+        return view('admin.user.edit',compact('user','roles'));
 
     }
 
@@ -155,7 +159,7 @@ class AdminController extends BaseController
         //提示语句
         $request->session()->flash('success', '删除成功');
         //显示视图
-        return redirect()->route('admin.add');
+        return redirect()->route('admin.index');
 
 
     }

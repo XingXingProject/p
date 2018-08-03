@@ -50,6 +50,30 @@ Route::domain('admin.ele.com')->namespace('Admin')->group(function () {
     Route::any('active/edit/{id}',"ActiveController@edit")->name('active.edit');
     Route::any('active/del/{id}',"ActiveController@del")->name('active.del');
     Route::any('active/see/{id}',"ActiveController@see")->name('active.see');
+    //会员管理[会员列表,查询会员,查看会员信息,禁用会员账号]
+    Route::any('member/index',"MemberController@index")->name('member.index');
+    Route::any('member/info/{id}',"MemberController@info")->name('member.info');
+    Route::any('member/check/{id}',"MemberController@check")->name('member.check');
+
+    //订单
+    Route::get('order/index',"OrderController@index")->name('orders.index');
+    Route::get('order/day',"OrderController@day")->name('orders.day');
+    Route::get('order/month',"OrderController@month")->name('orders.month');
+    //菜品
+    Route::get('order/menu',"OrderController@menu")->name('orders.menu');
+    Route::get('order/menuDay',"OrderController@menuDay")->name('orders.menuDay');
+    Route::get('order/menuMonth',"OrderController@menuMonth")->name('orders.menuMonth');
+
+    //平台权限Rbac
+    Route::any('per/index',"PermissionController@index")->name('per.index');
+    Route::any('per/add',"PermissionController@add")->name('per.add');
+    Route::any('per/del/{id}',"PermissionController@del")->name('per.del');
+    Route::any('per/edit/{id}',"PermissionController@edit")->name('per.edit');
+    //平台角色Rbac
+    Route::any('role/index',"RoleController@index")->name('role.index');
+    Route::any('role/add',"RoleController@add")->name('role.add');
+    Route::any('role/edit/{id}',"RoleController@edit")->name('role.edit');
+    Route::any('role/del/{id}',"RoleController@del")->name('role.del');
 
 
 });
@@ -74,6 +98,21 @@ Route::domain('shop.ele.com')->namespace('Shop')->group(function () {
     //查看平台活动
     Route::any('active/info',"ActiveController@info")->name('active.info');
     Route::any('active/show/{id}',"ActiveController@show")->name('active.show');
+
+
+    //订单管理[订单列表,查看订单,取消订单,发货]
+    Route::any('order/index',"OrderController@index")->name('order.index');
+    Route::any('order/info/{id}',"OrderController@info")->name('order.info');
+    Route::any('order/cell/{id}',"OrderController@cell")->name('order.cell');
+    Route::any('order/send/{id}',"OrderController@send")->name('order.send');
+    //订单量统计[按日统计,按月统计,累计]（每日、每月、总计）
+    Route::any('order/day',"OrderController@day")->name('order.day');
+    Route::any('order/month',"OrderController@month")->name('order.month');
+    Route::get('order/total',"OrderController@total")->name('order.total');
+    //菜品销量统计[按日统计,按月统计,累计]（每日、每月、总计）
+    Route::any('order/menuDay',"OrderController@menuDay")->name('order.menuDay');
+    Route::any('order/menuMonth',"OrderController@menuMonth")->name('order.menuMonth');
+    Route::get('order/menu',"OrderController@menu")->name('order.menu');
 
 
 });
