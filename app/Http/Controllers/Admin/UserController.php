@@ -23,7 +23,7 @@ class UserController extends BaseController
 
         //显示
         $shops = User::where('name', 'like', "%$search%")
-            ->paginate(2);
+            ->paginate(10);
         //显示视图
         return view('admin.shop.index', compact('shops', 'query', 'info'));
     }

@@ -165,7 +165,7 @@
                         <li class="user-footer">
                             <div class="pull-left">
                                 @auth('admin')
-                                    <a href="#" class="btn btn-default btn-flat">管理员：{{\Illuminate\Support\Facades\Auth::user()->name}}  </a>
+                                    <a href="#" class="btn btn-default btn-flat">管理员：{{\Illuminate\Support\Facades\Auth::guard('admin')->user()->name}}  </a>
 
                                 @endauth
                                 @guest('admin')

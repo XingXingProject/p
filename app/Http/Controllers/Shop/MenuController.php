@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\shop;
+namespace App\Http\Controllers\Shop;
 
 use App\Models\Menu;
 use App\Models\MenuCategory;
 use App\Models\ShopInfo;
 use Faker\Provider\File;
 use Illuminate\Http\Request;
-use App\Http\Controllers\shop\BaseController;
+use App\Http\Controllers\Shop\BaseController;
 use Illuminate\Support\Facades\Auth;
 
 class MenuController extends BaseController

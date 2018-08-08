@@ -16,8 +16,17 @@ Route::get('/', function () {
 });
 
 
+
+//测试
+Route::get('/mail', function () {
+    $order =\App\Models\Order::find(18);
+
+    return new \App\Mail\OrderShipped($order);
+});
+
 //平台路由admin.ele.com
 Route::domain('admin.ele.com')->namespace('Admin')->group(function () {
+
     //店铺分类 route('路径'，‘控制器/方法’)
     Route::get('shop_category/index',"ShopCategoryController@index")->name('shop_category.index');
     Route::any('shop_category/add',"ShopCategoryController@add")->name('shop_category.add');
@@ -75,6 +84,35 @@ Route::domain('admin.ele.com')->namespace('Admin')->group(function () {
     Route::any('role/edit/{id}',"RoleController@edit")->name('role.edit');
     Route::any('role/del/{id}',"RoleController@del")->name('role.del');
 
+    //平台分级 Nav
+    Route::any('nav/index',"NavController@index")->name('nav.index');
+    Route::any('nav/add',"NavController@add")->name('nav.add');
+    Route::any('nav/edit/{id}',"NavController@edit")->name('nav.edit');
+    Route::any('nav/del/{id}',"NavController@del")->name('nav.del');
+
+    //平台抽奖活动表
+    Route::any('event/index',"EventController@index")->name('event.index');
+    Route::any('event/add',"EventController@add")->name('event.add');
+    Route::any('event/edit/{id}',"EventController@edit")->name('event.edit');
+    Route::any('event/del/{id}',"EventController@del")->name('event.del');
+    Route::any('event/see/{id}',"EventController@see")->name('event.see');
+    Route::any('event/prize/{id}',"EventController@prize")->name('event.prize');
+    //奖品表
+    Route::any('eventPrize/index',"EventPrizeController@index")->name('eventPrize.index');
+    Route::any('eventPrize/add',"EventPrizeController@add")->name('eventPrize.add');
+    Route::any('eventPrize/edit/{id}',"EventPrizeController@edit")->name('eventPrize.edit');
+    Route::any('eventPrize/del/{id}',"EventPrizeController@del")->name('eventPrize.del');
+    Route::any('eventPrize/see/{id}',"EventPrizeController@see")->name('eventPrize.see');
+    //活动报名表
+    Route::any('eventMember/index',"EventMemberController@index")->name('eventMember.index');
+    Route::any('eventMember/edit/{id}',"EventMemberController@edit")->name('eventMember.edit');
+    Route::any('eventMember/del/{id}',"EventMemberController@del")->name('eventMember.del');
+    Route::any('eventMember/see/{id}',"EventMemberController@see")->name('eventMember.see');
+
+
+
+
+
 
 });
 
@@ -114,6 +152,12 @@ Route::domain('shop.ele.com')->namespace('Shop')->group(function () {
     Route::any('order/menuMonth',"OrderController@menuMonth")->name('order.menuMonth');
     Route::get('order/menu',"OrderController@menu")->name('order.menu');
 
+
+    //活动报名表
+    Route::any('eventShop/index',"EventShopController@index")->name('eventShop.index');
+    Route::any('eventShop/add/{id}',"EventShopController@add")->name('eventShop.add');
+    Route::any('eventShop/see/{id}',"EventShopController@see")->name('eventShop.see');
+    Route::get('eventShop/read/{id}',"EventShopController@read")->name('eventShop.read');
 
 });
 

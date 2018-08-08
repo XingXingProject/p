@@ -10,12 +10,25 @@
             </div>
         </div>
 
+        {{--<div class="form-group">--}}
+            {{--<label class="col-sm-2 control-label">权限名称</label>--}}
+            {{--<div class="col-sm-10">--}}
+                {{--@foreach($pers as $per)--}}
+                    {{--<input type="checkbox" name="per[]" value="{{$per->name}}">{{$per->name}}--}}
+                {{--@endforeach--}}
+            {{--</div>--}}
+        {{--</div>--}}
+
         <div class="form-group">
             <label class="col-sm-2 control-label">权限名称</label>
             <div class="col-sm-10">
-                @foreach($pers as $per)
-                    <input type="checkbox" name="per[]" value="{{$per->name}}">{{$per->name}}
-                @endforeach
+                    <select name="per[]"  multiple="multiple">
+                        <option value="#">请选择</option>
+                        @foreach($pers as $per)
+
+                        <option value="{{$per->name}}">{{$per->name}}</option>
+                        @endforeach
+                    </select>
             </div>
         </div>
 

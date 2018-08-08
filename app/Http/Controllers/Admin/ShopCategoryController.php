@@ -21,7 +21,7 @@ class ShopCategoryController extends BaseController
 
         //显示
         $shops = ShopCategory::where('name', 'like', "%$search%")
-            ->paginate(5);
+            ->paginate(10);
         //显示视图
         return view('admin.category.index', compact('shops', 'query'));
     }

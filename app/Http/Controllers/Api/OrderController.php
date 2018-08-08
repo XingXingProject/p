@@ -13,6 +13,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Mrgoon\AliSms\AliSms;
 
 class OrderController extends BaseController
 {
@@ -148,6 +149,8 @@ class OrderController extends BaseController
         $order = Order::find($request->input('id'));
         //得到当前的用户
         $member = Member::where('id', $order->user_id)->first();
+
+
 //       dd($member);
         //判断用户余额够不够
         if ($order->total > $member->money) {
@@ -163,6 +166,14 @@ class OrderController extends BaseController
         //改变订单状态
         $order->update(['status' => 1]);
 
+        $config = [
+            'access_key' => 'LTAIylMWxorh14gn',
+            'access_secret' => 'cA2kpj4Ztn6WiJBZXFkHzkAo8dXrxK',
+            'sign_name' => '邓可星',
+        ];
+          $aliSms = new AliSms();
+       // 调用接口发送短信
+         $response = $aliSms->sendSms($member->tel, 'SMS_141600108', ['product' => $order->order_code], $config);
 
         return [
             'status' => "true",

@@ -22,5 +22,5 @@
             </tr>
         @endforeach
     </table>
-    {{--{{$pers->appends($query)->links()}}--}}
+    {{$pers->links()}}
 @endsection

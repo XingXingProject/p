@@ -24,7 +24,7 @@ class ShopInfoController extends BaseController
 
         //显示
         $shops = ShopInfo::where('shop_name', 'like', "%$search%")
-            ->paginate(2);
+            ->paginate(10);
         //显示视图
         return view('admin.info.info_index', compact('shops', 'query','category'));
     }

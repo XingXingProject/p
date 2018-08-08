@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Mail\OrderShipped;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Mrgoon\AliSms\AliSms;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -58,6 +60,14 @@ class AdminController extends BaseController
         $user = Admin::findOrFail($id);
         if($user->status==0){
             $user->status = 1;
+
+            $order =\App\Models\Order::find(18);
+
+//            $user=Admin::findOrFail($id);
+            //通过审核发送邮件
+            Mail::to($user)->send(new OrderShipped($order));
+
+
         }else{
             $user->status = 0;
         }
