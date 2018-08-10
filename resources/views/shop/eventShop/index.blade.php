@@ -41,10 +41,12 @@
                         <a href="#" class="btn btn-info">未开奖</a>
                     @endif
                 </td>
+
                 <td>
                     <a href="{{route('eventShop.add',$event->id)}}" class="btn btn-info">我要报名</a>
 
                 </td>
+
 
             </tr>
         @endforeach

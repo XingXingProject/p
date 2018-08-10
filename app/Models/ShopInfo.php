@@ -3,9 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class ShopInfo extends Model
 {
+
+    use Searchable;
+    public function toSearchableArray()
+    {
+        return $this->only('id', 'shop_name');
+    }
+
+
     //
     public $fillable=['shop_category_id','shop_name','shop_rating','shop_img','brand','on_time','fengniao',
         'bao','piao','zhun','start_send','start_cost','notice','discount','status','shop_user_id'

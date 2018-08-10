@@ -14,6 +14,19 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/order/clear', function () {
+    //处理超时未支付的订单
+    /**
+     * 1.找出 超时   未支付   订单
+     * 当前时间-创建时间>15*60
+     * 当前时间-15*60>创建时间
+     * 创建时间<当前时间-15*60
+     * */
+    while (true){
+        $orders=\App\Models\Order::where("status",0)->where('created_at','<',date("Y-m-d H:i:s",(time()-15*60)))->update(['status'=>-1]);
+        sleep(5);
+    }
+});
 
 
 
@@ -63,6 +76,7 @@ Route::domain('admin.ele.com')->namespace('Admin')->group(function () {
     Route::any('member/index',"MemberController@index")->name('member.index');
     Route::any('member/info/{id}',"MemberController@info")->name('member.info');
     Route::any('member/check/{id}',"MemberController@check")->name('member.check');
+    Route::any('member/fill/{id}',"MemberController@fill")->name('member.fill');
 
     //订单
     Route::get('order/index',"OrderController@index")->name('orders.index');

@@ -20,6 +20,7 @@
                 <td>{{$member->tel}}</td>
 
                 <td>
+                    <a href="{{route('member.fill',$member->id)}}" class=" btn btn-success">充值</a>
                     <a href="{{route('member.index',$member->id)}}" class=" btn btn-success">返回</a>
 
                 </td>

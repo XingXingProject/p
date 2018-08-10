@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Mail\OrderShipped;
 use App\Models\Event;
 use App\Models\Event_member;
 use App\Models\Event_prize;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class EventController extends BaseController
 {
@@ -106,13 +109,19 @@ class EventController extends BaseController
         shuffle($userId);
         //通过活动id找到奖品
         $prizes=Event_prize::where('event_id',$id)->get()->shuffle();
-         //循环奖品
-        foreach ($prizes as $k=>$prize){
-            //给奖品user_id 赋值
-            $prize->user_id=$userId[$k];
-            $prize->save();
-
-        }
+            //循环奖品
+            foreach ($prizes as $k=>$prize){
+                //给奖品user_id 赋值
+//                if(count($userId)===$k){
+//                    break;
+//                }
+                $prize->user_id=$userId[$k];
+                $prize->save();
+                //得到中奖用户的id
+                $user=User::findOrFail($userId[$k]);
+                //当中奖的时候发送邮件
+                Mail::to($user)->send(new OrderShipped($prize));
+            }
         //修改状态
         $event=Event::findOrFail($id);
         $event->is_prize=1;

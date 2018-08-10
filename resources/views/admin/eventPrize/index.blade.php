@@ -27,7 +27,11 @@
                 <td>
                     <a href="{{route('eventPrize.see',$event->id)}}" class=" btn btn-success">查看详情</a>
                 </td>
+                @if($event->user_id)
                 <td>{{$event->user->name}}</td>
+                 @else
+                    <td></td>
+                @endif
                 <td>
                     <a href="{{route('eventPrize.edit',$event->id)}}" class=" btn btn-success">编辑</a>
 

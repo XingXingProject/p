@@ -57,6 +57,29 @@ class MemberController extends BaseController
 
 
 
+    public function fill(Request $request, $id)
+    {
+        //通过id找到对象
+        $member = Member::find($id);
+        //判断是不是post提交
+        if ($request->isMethod('post')) {
+            //充值
+            $member->money += $request->post('money');
+            $member->jifen=$member->money+$member->jifen;
+            if ($member->save()) {
+                //提示
+                $request->session()->flash('success', "充值成功");
+                //跳转
+                return redirect()->route('member.index');
+            }
+        }
+        //显示视图
+        return view("admin.member.check");
+
+    }
+
+
+
 
 
 

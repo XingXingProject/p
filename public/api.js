@@ -34,5 +34,5 @@ window.api = {
   // 支付接口
   pay: '/api/order/pay',
     // 用户详情接口
-  userDetail: 'http://www.ele.com/api/member/detail'
+  userDetail: '/api/member/detail'
 };

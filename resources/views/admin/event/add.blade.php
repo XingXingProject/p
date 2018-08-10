@@ -39,10 +39,10 @@
             <div class=" col-sm-6">
                 <div class="checkbox">
                     <label>
-                        <input type="radio" name="is_prize" value="1"> 显示
+                        <input type="radio" name="is_prize" value="1"> 是
                     </label>
                     <label>
-                        <input type="radio" name="is_prize" value="0"> 隐藏
+                        <input type="radio" name="is_prize" value="0"> 否
                     </label>
                 </div>
             </div>

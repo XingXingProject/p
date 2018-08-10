@@ -39,10 +39,10 @@
             <div class=" col-sm-6">
                 <div class="checkbox">
                     <label>
-                        <input type="radio" name="is_prize" value="1" @if($event->is_prize==1) checked @endif> 显示
+                        <input type="radio" name="is_prize" value="1" @if($event->is_prize==1) checked @endif> 是
                     </label>
                     <label>
-                        <input type="radio" name="is_prize" value="0" @if($event->is_prize==0) checked @endif> 隐藏
+                        <input type="radio" name="is_prize" value="0" @if($event->is_prize==0) checked @endif> 否
                     </label>
                 </div>
             </div>

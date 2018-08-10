@@ -17,9 +17,9 @@ class Event_member extends Model
     }
 
     //活动名字
-    public function eve(){
+    public function event(){
 
-        return $this->belongsTo(Event::class,'id');
+        return $this->belongsTo(Event::class,'event_id');
 
     }
 }

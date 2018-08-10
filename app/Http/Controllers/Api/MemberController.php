@@ -6,6 +6,7 @@ use App\Models\Member;
 use foo\bar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +24,8 @@ class MemberController extends BaseController
         //随机产生验证码
         $code = rand(1000, 9000);
         //存验证码 存Redis里面  ["tel_123456"=>1245];  只能存5分钟
-        Redis::setex("tel_" . $tel, 300, $code);
+//        Redis::setex("tel_" . $tel, 300, $code);
+        Cache::put("tel_" . $tel, $code,300);
 
 //       dd( Redis::get("tel_" . $tel));
         //测试
@@ -88,9 +90,11 @@ class MemberController extends BaseController
 
             }
 //取出验证码
-$sms = Redis::get("tel_" . $data['tel']);
-
-            if ($sms !== $data['sms']) {
+     $sms = Cache::get("tel_" . $data['tel']);
+//            dd($sms,$data['sms']);
+//     $sms = Redis::get("tel_" . $data['tel']);
+//              dd($data['sms']);
+            if ($sms != $data['sms']) {
                 return [
                     'status' => 'false',
                     'message' => "验证码错误"
@@ -132,7 +136,7 @@ $sms = Redis::get("tel_" . $data['tel']);
                 'status' => "true",
                 'message' => "登陆成功",
                 'user_id' => $member->id,
-                'username' => $member->name
+                'username' => $member->username
 
             ];
         } else {
@@ -226,6 +230,7 @@ $sms = Redis::get("tel_" . $data['tel']);
     {
         $id=$request->post('user_id');
          $mem= Member::where('id',$id)->first();
+         $mem->username=$mem->username;
          return $mem;
 
     }

@@ -83,17 +83,17 @@ class EventMemberController extends Controller
     }
 
 
-//    public function del(Request $request,$id)
-//    {
-//        $event=Event_member::findOrFail($id);
-//        if($event->is_prize!=1){
-//            $request->session()->flash('danger','活动还没有结束，不能删除');
-//        }
-//        $event->delete();
-//        //视图跳转
-//        return  redirect()->route('event.index');
-//
-//    }
+    public function del(Request $request,$id)
+    {
+        $event=Event_member::findOrFail($id);
+        if($event->is_prize!=1){
+            $request->session()->flash('danger','活动还没有结束，不能删除');
+        }
+        $event->delete();
+        //视图跳转
+        return  redirect()->route('event.index');
+
+    }
 
 
 }

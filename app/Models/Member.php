@@ -8,4 +8,6 @@ class Member extends Model
 {
     //
     public $fillable=['username','password','tel','money','jifen','status'];
+
+    public $hidden=['password','rememberToken','status'];
 }

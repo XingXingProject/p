@@ -11,7 +11,7 @@
         @foreach($events as $event)
             <tr class="info">
                 <td>{{$event->id}}</td>
-                <td>{{$event->eve->title}}</td>
+                <td>{{$event->event->title}}</td>
                 <td>{{$event->user->name}}</td>
                 <td>
                     <a href="{{route('eventMember.edit',$event->id)}}" class=" btn btn-success">编辑</a>

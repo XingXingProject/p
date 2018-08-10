@@ -177,6 +177,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //全文搜索
+        Laravel\Scout\ScoutServiceProvider::class,
+        Vanry\Scout\TNTSearchScoutServiceProvider::class,
 
 
     ],

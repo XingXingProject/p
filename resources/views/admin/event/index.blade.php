@@ -45,7 +45,9 @@
                     <a href="{{route('event.edit',$event->id)}}" class=" btn btn-success">编辑</a>
 
                     <a href="{{route('event.del',$event->id)}}" class=" btn btn-danger">删除</a>
+                    @if($event->is_prize===0)
                     <a href="{{route('event.prize',$event->id)}}" class=" btn btn-danger">抽奖</a>
+                    @endif
                 </td>
 
             </tr>
