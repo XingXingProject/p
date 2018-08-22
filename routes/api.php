@@ -47,6 +47,11 @@ Route::domain('www.ele.com')->namespace('Api')->group(function(){
     Route::any("order/detail","OrderController@detail");
     Route::any("order/pay","OrderController@pay");
     Route::any("order/index","OrderController@index");
+//做微信支付
+    Route::get("order/wxPay","OrderController@wxPay");
+    Route::get("order/status","OrderController@status");
+    Route::any("order/ok","OrderController@ok");
+
 
 
 

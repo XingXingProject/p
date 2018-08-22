@@ -8,12 +8,17 @@ use App\Models\Member;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderGood;
+use EasyWeChat\Foundation\Application;
 use Faker\Provider\Base;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Mrgoon\AliSms\AliSms;
+
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\LabelAlignment;
+use Endroid\QrCode\QrCode;
 
 class OrderController extends BaseController
 {
@@ -94,14 +99,14 @@ class OrderController extends BaseController
             DB::commit();
             //捕获
         } catch (\Exception $exception) {
-              //回滚
+            //回滚
             DB::rollBack();
             //返回数据
             return [
                 "status" => "false",
                 "message" => $exception->getMessage()
             ];
-        }catch(QueryException $exception){
+        } catch (QueryException $exception) {
             //回滚
             DB::rollBack();
             //返回数据  指数据库
@@ -122,6 +127,8 @@ class OrderController extends BaseController
     //订单detail
     public function detail(Request $request)
     {
+
+
         //取出订单的信息
         $order = Order::find($request->input('id'));
 
@@ -171,9 +178,9 @@ class OrderController extends BaseController
             'access_secret' => 'cA2kpj4Ztn6WiJBZXFkHzkAo8dXrxK',
             'sign_name' => '邓可星',
         ];
-          $aliSms = new AliSms();
-       // 调用接口发送短信
-         $response = $aliSms->sendSms($member->tel, 'SMS_141600108', ['product' => $order->order_code], $config);
+        $aliSms = new AliSms();
+        // 调用接口发送短信
+        $response = $aliSms->sendSms($member->tel, 'SMS_141600108', ['product' => $order->order_code], $config);
 
         return [
             'status' => "true",
@@ -209,6 +216,115 @@ class OrderController extends BaseController
 
         return $datas;
 
+
+    }
+
+    //微信支持
+    public function wxPay(Request $request)
+    {
+//        dd(public_path().'/aa/e1.jpg');
+        //1、得到订单
+        $order = Order::find($request->input('id'));
+//        $orderGood = OrderGood::find($order->id)->get();
+        //创建操作微信的对象
+        $app = new Application(config('wechat'));
+
+        //得到支付对象
+        $payment = $app->payment;
+//        dd($payment);
+        //2、创建订单
+        $attributes = [
+            'trade_type' => 'NATIVE', // JSAPI，NATIVE，APP...
+            'body' => "饭店支付",
+            'detail' => '源码点餐详情',
+            'out_trade_no' => $order->order_code,
+            'total_fee' => $order->total * 100, // 单位：分
+            'notify_url' => 'http://www.dengkexing.cn/api/order/ok', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+            // 'openid'           =>$order->id, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
+            // ...
+        ];
+        //生成订单
+        $orderPay = new \EasyWeChat\Payment\Order($attributes);
+//dd($orderPay);
+        //统一下单
+        $result = $payment->prepare($orderPay);
+
+        //  dd($result);
+        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS') {
+//            取出预支付链接
+//            dd($result->code_url);
+            $payUrl = $result->code_url;
+
+            $qrCode = new QrCode($payUrl);//地址
+            $qrCode->setSize(200);//二维码大小
+
+// Set advanced options
+            $qrCode->setWriterByName('png');
+            $qrCode->setMargin(10);
+            $qrCode->setEncoding('UTF-8');
+            $qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH);//容错级别
+            $qrCode->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0]);
+            $qrCode->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255, 'a' => 0]);
+            $qrCode->setLabel('微信扫码支付', 16, public_path() . '/aa/noto_sans.otf', LabelAlignment::CENTER);
+
+            $qrCode->setLogoPath(public_path() . '/aa/e1.jpg');
+            $qrCode->setLogoWidth(80);//logo大小
+            header('Content-Type: ' . $qrCode->getContentType());
+            echo $qrCode->writeString();
+            exit;
+
+        }
+
+
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \EasyWeChat\Core\Exceptions\FaultException
+     *
+     */
+    //微信异步通知方法
+    public function ok(){
+
+        //1.创建操作微信的对象
+        $app = new Application(config('wechat'));
+        //2.处理微信通知信息
+        $response = $app->payment->handleNotify(function($notify, $successful){
+            // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
+            //  $order = 查询订单($notify->out_trade_no);
+            $order=Order::where("order_code",$notify->out_trade_no)->first();
+
+            if (!$order) { // 如果订单不存在
+                return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
+            }
+            // 如果订单存在
+            // 检查订单是否已经更新过支付状态
+            if ($order->status!==0) { // 假设订单字段“支付时间”不为空代表已经支付
+                return true; // 已经支付成功了就不再更新了
+            }
+            // 用户是否支付成功
+            if ($successful) {
+                // 不是已经支付状态则修改为已经支付状态
+                // $order->paid_at = time(); // 更新支付时间为当前时间
+                $order->status = 1;//更新订单状态
+            }
+
+            $order->save(); // 保存订单
+
+            return true; // 返回处理完成
+        });
+
+        return $response;
+
+    }
+
+
+//微信订单状态
+    public function status(Request $request)
+    {
+        return [
+            'status'=>Order::find($request->input('id'))->status
+        ];
 
     }
 

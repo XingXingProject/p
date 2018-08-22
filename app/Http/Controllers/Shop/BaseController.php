@@ -18,7 +18,7 @@ class BaseController extends Controller
 
         //添加保安 验证登录
         $this->middleware('auth', [
-            'except' => ['joins','reg','index'],
+            'except' => ['joins','reg'],
         ]);
 //再添加一个 login只有guest才能访问
 //        $this->middleware("guest", [
